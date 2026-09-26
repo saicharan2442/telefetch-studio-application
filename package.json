@@ -1,5 +1,8 @@
 {
   "name": "nextjs-postgresql-template",
+  "version": "1.0.0",
+  "description": "TeleFetch Studio Application",
+  "author": "TeleFetch",
   "private": true,
   "main": "electron-main.js",
   "scripts": {
