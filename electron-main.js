@@ -55,19 +55,21 @@ async function createWindow() {
   });
 }
 
-// Read .env file from the directory where the executable is located
+// Try to read .env file from inside the app package first (if baked in via GitHub Secrets)
 const dotenv = require('dotenv');
 const exeDir = path.dirname(app.getPath('exe'));
-const envPath = app.isPackaged ? path.join(exeDir, '.env') : path.join(__dirname, '.env');
+const internalEnvPath = path.join(__dirname, '.env');
+const externalEnvPath = path.join(exeDir, '.env');
 
-if (fs.existsSync(envPath)) {
-  dotenv.config({ path: envPath });
+if (fs.existsSync(internalEnvPath)) {
+  dotenv.config({ path: internalEnvPath });
+} else if (app.isPackaged && fs.existsSync(externalEnvPath)) {
+  dotenv.config({ path: externalEnvPath });
 } else {
-  console.log(`No .env file found at ${envPath}`);
-  // In production, we could show a dialog to the user indicating they need a .env file.
+  console.log(`No .env file found at ${internalEnvPath} or ${externalEnvPath}`);
   if (app.isPackaged) {
     const { dialog } = require('electron');
-    dialog.showErrorBox('Missing Configuration', `Please create a .env file next to the executable at: ${envPath}`);
+    dialog.showErrorBox('Missing Configuration', `Please create a .env file next to the executable at: ${externalEnvPath}`);
   }
 }
 

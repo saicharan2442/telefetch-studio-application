@@ -35,11 +35,12 @@
       "package.json",
       ".next/**/*",
       "electron-main.js",
+      ".env",
       "public/**/*",
       "node_modules/**/*"
     ],
     "win": {
-      "target": "nsis",
+      "target": "portable",
       "icon": "public/favicon.ico"
     }
   },

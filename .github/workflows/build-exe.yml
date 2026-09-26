@@ -28,6 +28,14 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
+      - name: Create .env file from Secrets
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.TELEGRAM_API_ID }}" ] && [ -n "${{ secrets.TELEGRAM_API_HASH }}" ]; then
+            echo "TELEGRAM_API_ID=${{ secrets.TELEGRAM_API_ID }}" > .env
+            echo "TELEGRAM_API_HASH=${{ secrets.TELEGRAM_API_HASH }}" >> .env
+          fi
+
       - name: Build Electron app
         run: npm run electron:build
         env:
