@@ -3,8 +3,19 @@ const path = require('path');
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
-const getPort = require('get-port');
 const fs = require('fs');
+const net = require('net');
+
+function getAvailablePort() {
+  return new Promise((resolve, reject) => {
+    const srv = net.createServer();
+    srv.listen(0, () => {
+      const port = srv.address().port;
+      srv.close(() => resolve(port));
+    });
+    srv.on('error', reject);
+  });
+}
 
 const dev = false;
 const hostname = 'localhost';
@@ -12,7 +23,7 @@ const hostname = 'localhost';
 let mainWindow;
 
 async function createWindow() {
-  const port = await getPort();
+  const port = await getAvailablePort();
   const nextApp = next({ dev, hostname, port, dir: app.getAppPath() });
   const handle = nextApp.getRequestHandler();
 

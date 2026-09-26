@@ -7,6 +7,7 @@
   "main": "electron-main.js",
   "scripts": {
     "electron": "electron .",
+    "electron:dev": "electron .",
     "electron:build": "electron-builder -w",
     "dev": "next dev",
     "build": "next build",
