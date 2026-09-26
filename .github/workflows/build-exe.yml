@@ -20,6 +20,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        shell: bash
         run: |
           rm -f package-lock.json
           npm install --legacy-peer-deps
